@@ -1,0 +1,11 @@
+framework module provider {
+  umbrella header "provider.h"
+
+  export *
+  module * { export * }
+}
+
+module provider.Swift {
+    header "provider-Swift.h"
+    requires objc
+}
