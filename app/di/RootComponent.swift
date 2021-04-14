@@ -9,8 +9,13 @@ import Foundation
 import NeedleFoundation
 import presenter
 import provider
+import CoreLocation
 
 class RootComponent: BootstrapComponent {
+    var homeComponent:HomeComponent {
+        return HomeComponent(parent: self)
+    }
+    
     var restManager:IRestManager{
         return URLSession.shared
     }
@@ -23,23 +28,27 @@ class RootComponent: BootstrapComponent {
         return PlacesRestaurantMapper()
     }
     
+    var locationManager:ILocationManager{
+        return CLLocationManager()
+    }
+    
     var apiKey:String{
-        return "AIzaSyDibnvC-mTYs4RK_eIuzdPRuaxhAjYGT7g"
+        return "AIzaSyDIKzjfQQCahwJ9yEr8gBU9TqJ3MvbPXyY"
+    }
+    
+    var searchRadius:Double{
+        return 2000.0
     }
     
     var restProvider:IRestaurantProvider{
         return PlacesRestaurantProvider(restManager: restManager, mapper: mapper, apiKey: apiKey)
     }
     
-    var favsProvider:IFavProvider{
+    var favProvider:IFavProvider{
         return FavProvider(userDefaults: userDefaults)
     }
     
-    var imageProvider:IImageProvider{
+    var imgProvider:IImageProvider{
         return PlacesImageProvider(manager: restManager, apiKey: apiKey)
-    }
-
-    var presenter:IHomePresenter{
-        return HomePresenter(restProvider: restProvider, favoritesProvider: favsProvider, imageProvider: imageProvider, searchRadius: 2000.0)
     }
 }

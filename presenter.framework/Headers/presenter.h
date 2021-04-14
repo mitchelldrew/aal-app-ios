@@ -8,7 +8,7 @@
 
 @class PresenterKotlinException, PresenterModelRestaurant, PresenterKotlinThrowable, PresenterKotlinArray<T>;
 
-@protocol PresenterIFavProviderListener, PresenterIImageProviderListener, PresenterIRestaurantProviderListener, PresenterIHomeView, PresenterIHomePresenter, PresenterIRestaurantProvider, PresenterIFavProvider, PresenterIImageProvider, PresenterKotlinIterator;
+@protocol PresenterIFreezer, PresenterIFavProviderListener, PresenterIImageProviderListener, PresenterIRestaurantProviderListener, PresenterIHomeView, PresenterIHomePresenter, PresenterIRestaurantProvider, PresenterIFavProvider, PresenterIImageProvider, PresenterKotlinIterator;
 
 NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic push
@@ -138,6 +138,20 @@ __attribute__((swift_name("KotlinBoolean")))
 + (instancetype)numberWithBool:(BOOL)value;
 @end;
 
+__attribute__((swift_name("IFreezer")))
+@protocol PresenterIFreezer
+@required
+- (id)freezeObj:(id)obj __attribute__((swift_name("freeze(obj:)")));
+@end;
+
+__attribute__((objc_subclassing_restricted))
+__attribute__((swift_name("Freezer")))
+@interface PresenterFreezer : PresenterBase <PresenterIFreezer>
+- (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer));
++ (instancetype)new __attribute__((availability(swift, unavailable, message="use object initializers instead")));
+- (id)freezeObj:(id)obj __attribute__((swift_name("freeze(obj:)")));
+@end;
+
 __attribute__((swift_name("IFavProvider")))
 @protocol PresenterIFavProvider
 @required
@@ -201,7 +215,7 @@ __attribute__((swift_name("IHomePresenter")))
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("HomePresenter")))
 @interface PresenterHomePresenter : PresenterBase <PresenterIHomePresenter>
-- (instancetype)initWithRestProvider:(id<PresenterIRestaurantProvider> _Nullable)restProvider favoritesProvider:(id<PresenterIFavProvider> _Nullable)favoritesProvider imageProvider:(id<PresenterIImageProvider> _Nullable)imageProvider searchRadius:(double)searchRadius __attribute__((swift_name("init(restProvider:favoritesProvider:imageProvider:searchRadius:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithFreezer:(id<PresenterIFreezer> _Nullable)freezer restProvider:(id<PresenterIRestaurantProvider> _Nullable)restProvider favoritesProvider:(id<PresenterIFavProvider> _Nullable)favoritesProvider imageProvider:(id<PresenterIImageProvider> _Nullable)imageProvider searchRadius:(double)searchRadius __attribute__((swift_name("init(freezer:restProvider:favoritesProvider:imageProvider:searchRadius:)"))) __attribute__((objc_designated_initializer));
 - (void)deleteFavName:(NSString *)name __attribute__((swift_name("deleteFav(name:)")));
 - (void)queryName:(NSString *)name __attribute__((swift_name("query(name:)")));
 - (void)saveFavName:(NSString *)name __attribute__((swift_name("saveFav(name:)")));
