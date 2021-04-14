@@ -159,15 +159,15 @@ __attribute__((swift_name("IImageProvider")))
 @protocol PresenterIImageProvider
 @required
 - (void)addListenerImgListener:(id<PresenterIImageProviderListener>)imgListener __attribute__((swift_name("addListener(imgListener:)")));
-- (void)getUrl:(NSString *)url __attribute__((swift_name("get(url:)")));
+- (void)getImgRef:(NSString *)imgRef __attribute__((swift_name("get(imgRef:)")));
 - (void)removeListenerImgListener:(id<PresenterIImageProviderListener>)imgListener __attribute__((swift_name("removeListener(imgListener:)")));
 @end;
 
 __attribute__((swift_name("IImageProviderListener")))
 @protocol PresenterIImageProviderListener
 @required
-- (void)onErrorUrl:(NSString *)url error:(PresenterKotlinException *)error __attribute__((swift_name("onError(url:error:)")));
-- (void)onReceiveUrl:(NSString *)url imgBase64:(NSString *)imgBase64 __attribute__((swift_name("onReceive(url:imgBase64:)")));
+- (void)onErrorImgRef:(NSString *)imgRef error:(PresenterKotlinException *)error __attribute__((swift_name("onError(imgRef:error:)")));
+- (void)onReceiveImgRef:(NSString *)imgRef imgBase64:(NSString *)imgBase64 __attribute__((swift_name("onReceive(imgRef:imgBase64:)")));
 @end;
 
 __attribute__((swift_name("IRestaurantProvider")))
@@ -214,7 +214,7 @@ __attribute__((swift_name("IHomeView")))
 @protocol PresenterIHomeView
 @required
 - (void)displayFavsFavs:(NSArray<NSString *> *)favs __attribute__((swift_name("displayFavs(favs:)")));
-- (void)displayImgUrl:(NSString *)url imgBase64:(NSString *)imgBase64 __attribute__((swift_name("displayImg(url:imgBase64:)")));
+- (void)displayImgImgRef:(NSString *)imgRef imgBase64:(NSString *)imgBase64 __attribute__((swift_name("displayImg(imgRef:imgBase64:)")));
 - (void)displayRestsRests:(NSArray<PresenterModelRestaurant *> *)rests __attribute__((swift_name("displayRests(rests:)")));
 - (void)errorError:(PresenterKotlinException *)error __attribute__((swift_name("error(error:)")));
 @end;
@@ -245,16 +245,16 @@ __attribute__((swift_name("KotlinException")))
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("ModelRestaurant")))
 @interface PresenterModelRestaurant : PresenterBase
-- (instancetype)initWithIconRef:(NSString *)iconRef name:(NSString *)name formattedAddress:(NSString *)formattedAddress price:(NSString *)price score:(double)score numReviews:(int32_t)numReviews lat:(double)lat lng:(double)lng __attribute__((swift_name("init(iconRef:name:formattedAddress:price:score:numReviews:lat:lng:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithIconRef:(NSString *)iconRef name:(NSString *)name formattedAddress:(NSString *)formattedAddress price:(int32_t)price score:(double)score numReviews:(int32_t)numReviews lat:(double)lat lng:(double)lng __attribute__((swift_name("init(iconRef:name:formattedAddress:price:score:numReviews:lat:lng:)"))) __attribute__((objc_designated_initializer));
 - (NSString *)component1 __attribute__((swift_name("component1()")));
 - (NSString *)component2 __attribute__((swift_name("component2()")));
 - (NSString *)component3 __attribute__((swift_name("component3()")));
-- (NSString *)component4 __attribute__((swift_name("component4()")));
+- (int32_t)component4 __attribute__((swift_name("component4()")));
 - (double)component5 __attribute__((swift_name("component5()")));
 - (int32_t)component6 __attribute__((swift_name("component6()")));
 - (double)component7 __attribute__((swift_name("component7()")));
 - (double)component8 __attribute__((swift_name("component8()")));
-- (PresenterModelRestaurant *)doCopyIconRef:(NSString *)iconRef name:(NSString *)name formattedAddress:(NSString *)formattedAddress price:(NSString *)price score:(double)score numReviews:(int32_t)numReviews lat:(double)lat lng:(double)lng __attribute__((swift_name("doCopy(iconRef:name:formattedAddress:price:score:numReviews:lat:lng:)")));
+- (PresenterModelRestaurant *)doCopyIconRef:(NSString *)iconRef name:(NSString *)name formattedAddress:(NSString *)formattedAddress price:(int32_t)price score:(double)score numReviews:(int32_t)numReviews lat:(double)lat lng:(double)lng __attribute__((swift_name("doCopy(iconRef:name:formattedAddress:price:score:numReviews:lat:lng:)")));
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
 - (NSString *)description __attribute__((swift_name("description()")));
@@ -264,7 +264,7 @@ __attribute__((swift_name("ModelRestaurant")))
 @property (readonly) double lng __attribute__((swift_name("lng")));
 @property (readonly) NSString *name __attribute__((swift_name("name")));
 @property (readonly) int32_t numReviews __attribute__((swift_name("numReviews")));
-@property (readonly) NSString *price __attribute__((swift_name("price")));
+@property (readonly) int32_t price __attribute__((swift_name("price")));
 @property (readonly) double score __attribute__((swift_name("score")));
 @end;
 
