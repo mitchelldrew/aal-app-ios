@@ -9,9 +9,7 @@
 /* Begin PBXBuildFile section */
 		4B0D751A2626611900163095 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0D75192626611900163095 /* AppDelegate.swift */; };
 		4B0D751C2626611900163095 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0D751B2626611900163095 /* SceneDelegate.swift */; };
-		4B0D751E2626611900163095 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0D751D2626611900163095 /* ViewController.swift */; };
 		4B0D75232626611B00163095 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B0D75222626611B00163095 /* Assets.xcassets */; };
-		4B0D75262626611B00163095 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B0D75242626611B00163095 /* LaunchScreen.storyboard */; };
 		4B0D7545262663A300163095 /* presenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B0D75412626639E00163095 /* presenter.framework */; };
 		4B0D7546262663A300163095 /* presenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4B0D75412626639E00163095 /* presenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4B0D7548262663A400163095 /* provider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B0D75402626639E00163095 /* provider.framework */; };
@@ -47,9 +45,7 @@
 		4B0D75162626611900163095 /* app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = app.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B0D75192626611900163095 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4B0D751B2626611900163095 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		4B0D751D2626611900163095 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4B0D75222626611B00163095 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		4B0D75252626611B00163095 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4B0D75272626611B00163095 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4B0D75402626639E00163095 /* provider.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = provider.framework; sourceTree = "<group>"; };
 		4B0D75412626639E00163095 /* presenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = presenter.framework; sourceTree = "<group>"; };
@@ -106,9 +102,7 @@
 				4B0D754D2626663900163095 /* view */,
 				4B0D75192626611900163095 /* AppDelegate.swift */,
 				4B0D751B2626611900163095 /* SceneDelegate.swift */,
-				4B0D751D2626611900163095 /* ViewController.swift */,
 				4B0D75222626611B00163095 /* Assets.xcassets */,
-				4B0D75242626611B00163095 /* LaunchScreen.storyboard */,
 				4B0D75272626611B00163095 /* Info.plist */,
 				4BC1B003262682720080035F /* Extension.swift */,
 				4BFEC341262744F50053498E /* RestaurantItem.swift */,
@@ -218,7 +212,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B0D75262626611B00163095 /* LaunchScreen.storyboard in Resources */,
 				4B0D75232626611B00163095 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -307,7 +300,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B0D751E2626611900163095 /* ViewController.swift in Sources */,
 				4BC1B00226267CA30080035F /* HomeComponent.swift in Sources */,
 				4B0D754C262665D700163095 /* RootComponent.swift in Sources */,
 				4BC1B00026267C720080035F /* NeedleGenerated.swift in Sources */,
@@ -323,17 +315,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		4B0D75242626611B00163095 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4B0D75252626611B00163095 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		4B0D75282626611B00163095 /* Debug */ = {

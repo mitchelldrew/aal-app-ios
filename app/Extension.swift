@@ -18,7 +18,6 @@ protocol ILocationManager{
 extension CLLocationManager:ILocationManager{}
 
 extension UIStackView {
-
     func removeFully(view: UIView) {
         removeArrangedSubview(view)
         view.removeFromSuperview()
@@ -29,5 +28,4 @@ extension UIStackView {
             removeFully(view: view)
         }
     }
-
 }

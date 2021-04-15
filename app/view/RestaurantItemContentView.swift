@@ -156,7 +156,6 @@ class RestaurantItemContentView: UIView, UIContentView {
     
     
     @objc func switchChanged(mySwitch: UISwitch) {
-        print("selected")
         let value = mySwitch.isOn
         if let uName = currentConfiguration.name {
             if let uClosure = currentConfiguration.switchClosure {
