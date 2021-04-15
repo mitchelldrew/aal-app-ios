@@ -362,7 +362,6 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
             
             let addressLabel = UITextField()
             addressLabel.textColor = .systemGray
-            addressLabel.text = item.restaurant.formattedAddress
             
             let secondaryStack = UIStackView()
             secondaryStack.axis = .horizontal
@@ -385,7 +384,12 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
             else{
                 addressLabel.text = "\(priceString) - \(item.restaurant.formattedAddress)"
             }
-        
+            if let truncMe = addressLabel.text {
+                if(truncMe.count > 25){
+                    addressLabel.text = String(truncMe.prefix(25) + "...")
+                }
+            }
+            
             let textStack = UIStackView()
             textStack.axis = .vertical
             infoWindow.addArrangedSubview(textStack)
