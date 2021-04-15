@@ -27,9 +27,7 @@ struct RestaurantItemContentConfiguration: UIContentConfiguration, Equatable {
         guard state is UICellConfigurationState else {
                 return self
             }
-            
-            var updatedConfiguration = self
-        
+            let updatedConfiguration = self
             return updatedConfiguration
     }
     
