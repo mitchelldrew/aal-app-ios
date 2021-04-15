@@ -16,6 +16,7 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
     private var locationManager:ILocationManager
     private var displayedItems = [RestaurantItem]()
     private var restaurants = [ModelRestaurant]()
+    private var favs = [String]()
     
     var collectionView:UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, RestaurantItem>!
@@ -72,16 +73,18 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
     
     private func addHeader(){
         header = UIView()
-        var queryView = UIView()
+        let queryView = UIView()
         textField = UITextField()
-        var searchButton = UIButton(type: .roundedRect)
+        let searchButton = UIButton(type: .roundedRect)
                 
-        searchButton.layer.cornerRadius = 2
+        searchButton.layer.cornerRadius = 8
+        searchButton.backgroundColor = .systemGreen
         searchButton.setTitle("Search", for: .normal)
         searchButton.setTitleColor(.white, for: .normal)
         
         
         queryView.addSubview(textField!)
+        queryView.layer.cornerRadius = 8
         textField?.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             textField!.centerYAnchor.constraint(equalTo: queryView.centerYAnchor),
@@ -96,16 +99,13 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
         NSLayoutConstraint.activate([
             searchButton.heightAnchor.constraint(equalToConstant: 40.0),
             searchButton.trailingAnchor.constraint(equalTo: queryView.trailingAnchor),
-            searchButton.topAnchor.constraint(equalTo: queryView.topAnchor, constant: 0.0)
+            searchButton.topAnchor.constraint(equalTo: queryView.topAnchor, constant: 0.0),
+            searchButton.widthAnchor.constraint(equalToConstant: 50)
         ])
 
-        
         textField?.text = "Search for a restaurant"
-        
-        
-        
         header?.addSubview(queryView)
-        queryView.backgroundColor = .systemGray
+        queryView.backgroundColor = .systemGray3
         queryView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             queryView.heightAnchor.constraint(equalTo: searchButton.heightAnchor),
@@ -132,27 +132,39 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
         restaurants.removeAll()
         mapView?.clear()
         presenter.query(name: (textField?.text)!)
+        textField?.resignFirstResponder()
     }
     
     private func addButton(){
         button = UIButton(type: .roundedRect)
         if let uButton = button {
+            
+            uButton.layer.cornerRadius = 10.0
+            uButton.layer.shadowColor = UIColor.gray.cgColor
+            uButton.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
+            uButton.layer.shadowRadius = 6.0
+            uButton.layer.shadowOpacity = 1
+            
             uButton.layer.cornerRadius = 5
             uButton.backgroundColor = .systemGreen
-            uButton.setTitle(" Map ", for: .normal)
+            uButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .black)
+            uButton.setTitle("Map", for: .normal)
             uButton.setTitleColor(.white, for: .normal)
             view.addSubview(uButton)
             uButton.translatesAutoresizingMaskIntoConstraints = false
             uButton.addTarget(self, action: #selector(pressedToggle(_:)), for: .touchUpInside)
             NSLayoutConstraint.activate([
                 uButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0.0),
-                uButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50.0)
+                uButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50.0),
+                uButton.widthAnchor.constraint(equalToConstant: 100),
+                uButton.heightAnchor.constraint(equalToConstant: 50)
             ])
         }
     }
     
     private func addCollectionView(){
-        let layoutConfig = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+        var layoutConfig = UICollectionLayoutListConfiguration(appearance: .plain)
+        layoutConfig.showsSeparators = false
         let listLayout = UICollectionViewCompositionalLayout.list(using: layoutConfig)
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: listLayout)
         collectionView.delegate = self
@@ -164,35 +176,11 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0.0),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0.0),
         ])
-        let cellRegistration = UICollectionView.CellRegistration<RestaurantItemListCell, RestaurantItem> { (cell, indexPath, item) in
-            /*
-            var content = cell.defaultContentConfiguration()
-            
-            var cardView = UIView()
-
-            
-            cardView.backgroundColor = .white
-
-            cardView.layer.cornerRadius = 10.0
-
-            cardView.layer.shadowColor = UIColor.gray.cgColor
-
-            cardView.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
-
-            cardView.layer.shadowRadius = 6.0
-
-            cardView.layer.shadowOpacity = 0.7
-            
-            content.image = item.image
-            content.text = item.restaurant.name
-            content.secondaryText = "Score:\(item.restaurant.score) (\(item.restaurant.numReviews))\n\(item.restaurant.formattedAddress)"
-            cell.contentConfiguration = content
- */
+        let cellRegistration = UICollectionView.CellRegistration<RestaurantItemListCell, RestaurantItem> { [self] (cell, indexPath, item) in
             cell.item = item
+            cell.switchClosure = getSwitchClosure()
+            cell.isFavorite = favs.contains(item.restaurant.name)
         }
-        
-        
-        
         
         dataSource = UICollectionViewDiffableDataSource<Section, RestaurantItem>(collectionView: collectionView) {
             (collectionView: UICollectionView, indexPath: IndexPath, identifier: RestaurantItem) -> UICollectionViewCell? in
@@ -208,12 +196,23 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
         collectionView.alpha = 100
     }
     
+    private func getSwitchClosure() -> (String,Bool) -> Void {
+        return { [self]restaurantName, switchValue in
+            if(switchValue){
+                presenter.saveFav(name: restaurantName)
+            }
+            else {
+                presenter.deleteFav(name: restaurantName)
+            }
+        }
+    }
+    
     @objc private func pressedToggle(_ sender: UIButton){
         if(isShowingList){
             isShowingList = false
             collectionView.alpha = 0
             mapView?.alpha = 100
-            button?.setTitle(" List ", for: .normal)
+            button?.setTitle("List", for: .normal)
             if let uMapView = mapView {
             view.bringSubviewToFront(uMapView)}
             if let uButton = button {view.bringSubviewToFront(uButton)}
@@ -222,7 +221,7 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
             isShowingList = true
             collectionView.alpha = 100
             mapView?.alpha = 0
-            button?.setTitle(" Map ", for: .normal)
+            button?.setTitle("Map", for: .normal)
             view.bringSubviewToFront(collectionView)
             if let uButton = button {view.bringSubviewToFront(uButton)}
         }
@@ -253,7 +252,6 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
     }
     
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
-        print("hello")
         print(marker.infoWindowAnchor)
         infoBubble = makeInfoBubble(marker: marker)
         mapView.animate(toLocation: marker.position)
@@ -264,7 +262,7 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
     }
     
     private func makeInfoBubble(marker:GMSMarker) -> UIView {
-        var ret = UIView()
+        let ret = UIView()
         return ret
     }
     
@@ -288,6 +286,7 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
     }
     
     func displayFavs(favs: [String]) {
+        self.favs = favs
     }
     
     func displayImg(imgRef: String, imgBase64: String) {
@@ -316,8 +315,6 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
         bounds = GMSCoordinateBounds()
         snapshot = NSDiffableDataSourceSnapshot<Section, RestaurantItem>()
         snapshot.appendSections([.main])
-        
-        
     }
     
     func error(error: KotlinException) {

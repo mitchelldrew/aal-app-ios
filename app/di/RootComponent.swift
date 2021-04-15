@@ -33,7 +33,7 @@ class RootComponent: BootstrapComponent {
     }
     
     var apiKey:String{
-        return "AIzaSyDIKzjfQQCahwJ9yEr8gBU9TqJ3MvbPXyY"
+        return "AIzaSyDibnvC-mTYs4RK_eIuzdPRuaxhAjYGT7g"
     }
     
     var searchRadius:Double{

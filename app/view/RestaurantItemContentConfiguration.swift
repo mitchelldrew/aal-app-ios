@@ -8,9 +8,16 @@
 import Foundation
 import UIKit
 
-struct RestaurantItemContentConfiguration: UIContentConfiguration, Hashable {
+struct RestaurantItemContentConfiguration: UIContentConfiguration, Equatable {
+    
     var name:String?
     var address:String?
+    var image:UIImage?
+    var price:Int32?
+    var score:Double?
+    var numReviews:Int32?
+    var isFav:Bool?
+    var switchClosure: ((String, Bool) -> Void)?
     
     func makeContentView() -> UIView & UIContentView {
         return RestaurantItemContentView(configuration: self)
@@ -24,5 +31,10 @@ struct RestaurantItemContentConfiguration: UIContentConfiguration, Hashable {
             var updatedConfiguration = self
         
             return updatedConfiguration
+    }
+    
+    
+    static func == (lhs: RestaurantItemContentConfiguration, rhs: RestaurantItemContentConfiguration) -> Bool {
+        return lhs.name == rhs.name
     }
 }
