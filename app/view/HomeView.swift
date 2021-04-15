@@ -23,7 +23,6 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
     var snapshot: NSDiffableDataSourceSnapshot<Section, RestaurantItem>!
     
     private var button:UIButton?
-    private var infoBubble:UIView?
     private var header:UIView?
     private var textField:UITextField?
     
@@ -46,19 +45,6 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus){
-        if(status == CLAuthorizationStatus.denied){
-            presenter.show(lat: HOME_LAT, lng: HOME_LNG)
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
-        let rest = displayedItems[indexPath.item].restaurant
-        let alert = UIAlertController(title: "\(rest.name)", message: "Located at \(rest.formattedAddress), \(rest.numReviews) reviewers have given this restaurant an averaged score of \(rest.score) with price range \(rest.price) of 5.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: {_ in }))
-        self.present(alert, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -127,14 +113,6 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
         header?.bringSubviewToFront(searchButton)
     }
     
-    @objc private func pressedSearch(_ sender: UIButton){
-        displayedItems.removeAll()
-        restaurants.removeAll()
-        mapView?.clear()
-        presenter.query(name: (textField?.text)!)
-        textField?.resignFirstResponder()
-    }
-    
     private func addButton(){
         button = UIButton(type: .roundedRect)
         if let uButton = button {
@@ -196,6 +174,22 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
         collectionView.alpha = 100
     }
     
+    private func addMapview(){
+        let camera = GMSCameraPosition.camera(withLatitude: HOME_LAT, longitude: HOME_LNG, zoom: 15.0)
+        mapView = GMSMapView.map(withFrame: self.view.frame, camera: camera)
+        self.view.addSubview(mapView!)
+        mapView?.delegate = self
+        mapView?.alpha = 100
+        
+        mapView?.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            mapView!.topAnchor.constraint(equalTo: header!.bottomAnchor, constant: 0.0),
+            mapView!.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0.0),
+            mapView!.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0.0),
+            mapView!.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0.0),
+        ])
+    }
+    
     private func getSwitchClosure() -> (String,Bool) -> Void {
         return { [self]restaurantName, switchValue in
             if(switchValue){
@@ -205,6 +199,14 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
                 presenter.deleteFav(name: restaurantName)
             }
         }
+    }
+    
+    @objc private func pressedSearch(_ sender: UIButton){
+        displayedItems.removeAll()
+        restaurants.removeAll()
+        mapView?.clear()
+        presenter.query(name: (textField?.text)!)
+        textField?.resignFirstResponder()
     }
     
     @objc private func pressedToggle(_ sender: UIButton){
@@ -227,43 +229,10 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
         }
     }
     
-    
-    
-    private func addMapview(){
-        let camera = GMSCameraPosition.camera(withLatitude: HOME_LAT, longitude: HOME_LNG, zoom: 15.0)
-        mapView = GMSMapView.map(withFrame: self.view.frame, camera: camera)
-        self.view.addSubview(mapView!)
-        mapView?.delegate = self
-        mapView?.alpha = 100
-        
-        mapView?.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            mapView!.topAnchor.constraint(equalTo: header!.bottomAnchor, constant: 0.0),
-            mapView!.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0.0),
-            mapView!.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0.0),
-            mapView!.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0.0),
-        ])
-    }
-    
     private func requestLocation(){
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
-    }
-    
-    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
-        print(marker.infoWindowAnchor)
-        infoBubble = makeInfoBubble(marker: marker)
-        mapView.animate(toLocation: marker.position)
-        
-        marker.iconView?.addSubview(infoBubble!)
-        
-        return true
-    }
-    
-    private func makeInfoBubble(marker:GMSMarker) -> UIView {
-        let ret = UIView()
-        return ret
     }
     
     
@@ -275,14 +244,6 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         presenter.shutdown()
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        presenter.show(lat: locations[0].coordinate.latitude, lng: locations[0].coordinate.longitude)
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error)
     }
     
     func displayFavs(favs: [String]) {
@@ -298,6 +259,7 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
                 displayedItems.append(item)
                 DispatchQueue.main.async { [unowned self] in
                     let marker = GMSMarker(position: CLLocationCoordinate2D(latitude: rest.lat, longitude: rest.lng))
+                    marker.title = rest.name
                     marker.map = mapView
                     bounds = bounds.includingCoordinate(CLLocationCoordinate2D(latitude: rest.lat, longitude: rest.lng))
                 }
@@ -320,4 +282,126 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
     func error(error: KotlinException) {
         print(error)
     }
+    
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus){
+        if(status == CLAuthorizationStatus.denied){
+            presenter.show(lat: HOME_LAT, lng: HOME_LNG)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        presenter.show(lat: locations[0].coordinate.latitude, lng: locations[0].coordinate.longitude)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
+        let rest = displayedItems[indexPath.item].restaurant
+        let alert = UIAlertController(title: "\(rest.name)", message: "Located at \(rest.formattedAddress), \(rest.numReviews) reviewers have given this restaurant an averaged score of \(rest.score) with price range \(rest.price) of 5.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: {_ in }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func mapView(_ mapView: GMSMapView, markerInfoWindow marker: GMSMarker) -> UIView? {
+        return getInfoWindow(marker: marker)
+    }
+    
+    
+    private func getRestaurantItem(name:String?) -> RestaurantItem? {
+        for item in displayedItems {
+            if(item.restaurant.name == name) { return item }
+        }
+        return nil
+    }
+    
+    private func getInfoWindow(marker:GMSMarker) -> UIView {
+        let infoWindow = UIStackView()
+        if let item = getRestaurantItem(name: marker.title) {
+            infoWindow.backgroundColor = .white
+            infoWindow.layer.cornerRadius = 10.0
+            infoWindow.layer.shadowColor = UIColor.gray.cgColor
+            infoWindow.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
+            infoWindow.layer.shadowRadius = 6.0
+            infoWindow.layer.shadowOpacity = 0.7
+            infoWindow.axis = .horizontal
+            infoWindow.alignment = .center
+            infoWindow.distribution = .fill
+        
+            let imageview = UIImageView(image: item.image)
+        
+            infoWindow.addArrangedSubview(imageview)
+            infoWindow.translatesAutoresizingMaskIntoConstraints = false
+            infoWindow.frame = CGRect(origin: marker.infoWindowAnchor, size: CGSize(width: 100, height: 50))
+            
+        
+            
+            let score = UIStackView()
+            if(item.restaurant.score >= 1){
+                for _ in 1 ... Int(item.restaurant.score) {
+                        let imgView = UIImageView(image: UIImage(named: "star"))
+                        imgView.translatesAutoresizingMaskIntoConstraints = false
+                        let spacer = UIView()
+                        NSLayoutConstraint.activate([
+                            imgView.heightAnchor.constraint(equalToConstant: CGFloat(20)),
+                            imgView.widthAnchor.constraint(equalToConstant: CGFloat(20)),
+                            spacer.widthAnchor.constraint(equalToConstant: 5)
+                        ])
+                        score.addArrangedSubview(imgView)
+                        score.addArrangedSubview(spacer)
+                    }
+                }
+            
+            
+            let numReviewsLabel = UITextField()
+            numReviewsLabel.textColor = .systemGray
+            numReviewsLabel.font = UIFont.systemFont(ofSize: 14)
+            numReviewsLabel.text = "(\(item.restaurant.numReviews))"
+            
+            let addressLabel = UITextField()
+            addressLabel.textColor = .systemGray
+            addressLabel.text = item.restaurant.formattedAddress
+            
+            let secondaryStack = UIStackView()
+            secondaryStack.axis = .horizontal
+            secondaryStack.addArrangedSubview(score)
+            secondaryStack.addArrangedSubview(numReviewsLabel)
+            NSLayoutConstraint.activate([
+                score.leadingAnchor.constraint(equalTo: secondaryStack.leadingAnchor),
+                numReviewsLabel.leadingAnchor.constraint(equalTo: score.trailingAnchor)
+            ])
+            
+            var priceString = ""
+                if(item.restaurant.price >= 1){
+                    for _ in 1 ... item.restaurant.price {
+                        priceString.append("$")
+                    }
+            }
+            if(priceString == ""){
+                addressLabel.text = item.restaurant.formattedAddress
+            }
+            else{
+                addressLabel.text = "\(priceString) - \(item.restaurant.formattedAddress)"
+            }
+        
+            let textStack = UIStackView()
+            textStack.axis = .vertical
+            infoWindow.addArrangedSubview(textStack)
+            textStack.translatesAutoresizingMaskIntoConstraints = false
+        
+            let nameLabel = UITextField()
+            nameLabel.textAlignment = .left
+            nameLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+            nameLabel.textColor = .systemGray
+            nameLabel.text = item.restaurant.name
+        
+            textStack.addArrangedSubview(nameLabel)
+            textStack.addArrangedSubview(secondaryStack)
+            textStack.addArrangedSubview(addressLabel)
+            }
+        return infoWindow
+    }
+    
 }

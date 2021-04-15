@@ -67,10 +67,6 @@ class RestaurantItemContentView: UIView, UIContentView {
             imageview.widthAnchor.constraint(equalToConstant: 100)
         ])
         
-        let scoreStack = UIStackView()
-        scoreStack.axis = .horizontal
-        
-        
         numReviewsLabel.textColor = .systemGray
         addressLabel.textColor = .systemGray
         numReviewsLabel.font = UIFont.systemFont(ofSize: 14)
@@ -135,14 +131,15 @@ class RestaurantItemContentView: UIView, UIContentView {
         score.removeFullyAllArrangedSubviews()
         if let uScore = configuration.score {
             if(uScore >= 1){
-                let spacer = UIView()
                 for _ in 1 ... Int(uScore) {
                     let imgView = UIImageView(image: UIImage(named: "star"))
                     imgView.translatesAutoresizingMaskIntoConstraints = false
-                    imgView.heightAnchor.constraint(equalToConstant: CGFloat(20)).isActive = true
-                    imgView.widthAnchor.constraint(equalToConstant: CGFloat(20)).isActive = true
                     let spacer = UIView()
-                    spacer.widthAnchor.constraint(equalToConstant: 5).isActive = true
+                    NSLayoutConstraint.activate([
+                        imgView.heightAnchor.constraint(equalToConstant: CGFloat(20)),
+                        imgView.widthAnchor.constraint(equalToConstant: CGFloat(20)),
+                        spacer.widthAnchor.constraint(equalToConstant: 5)
+                    ])
                     score.addArrangedSubview(imgView)
                     score.addArrangedSubview(spacer)
                 }
