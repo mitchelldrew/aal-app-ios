@@ -20,7 +20,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let winScene = (scene as? UIWindowScene) else { return }
         let rootComponent = RootComponent()
         GMSServices.provideAPIKey(rootComponent.apiKey)
+        
         window = UIWindow(windowScene: winScene)
+        window?.backgroundColor = .white
         window?.rootViewController = rootComponent.homeComponent.homeView()
         window?.makeKeyAndVisible()
     }

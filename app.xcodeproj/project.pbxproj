@@ -22,6 +22,9 @@
 		4BC1B00226267CA30080035F /* HomeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC1B00126267CA30080035F /* HomeComponent.swift */; };
 		4BC1B004262682720080035F /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC1B003262682720080035F /* Extension.swift */; };
 		4BFEC342262744F50053498E /* RestaurantItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFEC341262744F50053498E /* RestaurantItem.swift */; };
+		4BFEC3482627E63A0053498E /* RestaurantItemListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFEC3472627E63A0053498E /* RestaurantItemListCell.swift */; };
+		4BFEC34A2627E68D0053498E /* RestaurantItemContentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFEC3492627E68D0053498E /* RestaurantItemContentConfiguration.swift */; };
+		4BFEC34C2627E6D00053498E /* RestaurantItemContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFEC34B2627E6D00053498E /* RestaurantItemContentView.swift */; };
 		9F5D041E8E15CD8313188318 /* Pods_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B784B575BFFBC8BA536BD12 /* Pods_app.framework */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +59,9 @@
 		4BC1B00126267CA30080035F /* HomeComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeComponent.swift; sourceTree = "<group>"; };
 		4BC1B003262682720080035F /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		4BFEC341262744F50053498E /* RestaurantItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantItem.swift; sourceTree = "<group>"; };
+		4BFEC3472627E63A0053498E /* RestaurantItemListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantItemListCell.swift; sourceTree = "<group>"; };
+		4BFEC3492627E68D0053498E /* RestaurantItemContentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantItemContentConfiguration.swift; sourceTree = "<group>"; };
+		4BFEC34B2627E6D00053498E /* RestaurantItemContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantItemContentView.swift; sourceTree = "<group>"; };
 		5ACE3DB2485DFDB308D09237 /* Pods-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-app.release.xcconfig"; path = "Target Support Files/Pods-app/Pods-app.release.xcconfig"; sourceTree = "<group>"; };
 		6B784B575BFFBC8BA536BD12 /* Pods_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		89858FC739C4D93913EC5FAE /* Pods-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-app.debug.xcconfig"; path = "Target Support Files/Pods-app/Pods-app.debug.xcconfig"; sourceTree = "<group>"; };
@@ -105,6 +111,7 @@
 				4B0D75242626611B00163095 /* LaunchScreen.storyboard */,
 				4B0D75272626611B00163095 /* Info.plist */,
 				4BC1B003262682720080035F /* Extension.swift */,
+				4BFEC341262744F50053498E /* RestaurantItem.swift */,
 			);
 			path = app;
 			sourceTree = "<group>";
@@ -123,7 +130,9 @@
 			isa = PBXGroup;
 			children = (
 				4B0D754E2626664200163095 /* HomeView.swift */,
-				4BFEC341262744F50053498E /* RestaurantItem.swift */,
+				4BFEC3472627E63A0053498E /* RestaurantItemListCell.swift */,
+				4BFEC3492627E68D0053498E /* RestaurantItemContentConfiguration.swift */,
+				4BFEC34B2627E6D00053498E /* RestaurantItemContentView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -302,9 +311,12 @@
 				4BC1B00226267CA30080035F /* HomeComponent.swift in Sources */,
 				4B0D754C262665D700163095 /* RootComponent.swift in Sources */,
 				4BC1B00026267C720080035F /* NeedleGenerated.swift in Sources */,
+				4BFEC34C2627E6D00053498E /* RestaurantItemContentView.swift in Sources */,
 				4BFEC342262744F50053498E /* RestaurantItem.swift in Sources */,
+				4BFEC34A2627E68D0053498E /* RestaurantItemContentConfiguration.swift in Sources */,
 				4B0D751A2626611900163095 /* AppDelegate.swift in Sources */,
 				4B0D754F2626664200163095 /* HomeView.swift in Sources */,
+				4BFEC3482627E63A0053498E /* RestaurantItemListCell.swift in Sources */,
 				4B0D751C2626611900163095 /* SceneDelegate.swift in Sources */,
 				4BC1B004262682720080035F /* Extension.swift in Sources */,
 			);

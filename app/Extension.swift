@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreLocation
+import UIKit
 
 protocol ILocationManager{
     var delegate:CLLocationManagerDelegate? { get set }
