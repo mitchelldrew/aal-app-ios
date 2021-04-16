@@ -29,6 +29,7 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
     private var mapView: GMSMapView? = nil
     private var bounds = GMSCoordinateBounds()
     private var isShowingList = true
+    private var isLocationShown = false
     
     private let HOME_LAT = 37.79079080125669
     private let HOME_LNG = -122.4060422175774
@@ -291,7 +292,10 @@ class HomeView:UIViewController, IHomeView, CLLocationManagerDelegate, GMSMapVie
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        presenter.show(lat: locations[0].coordinate.latitude, lng: locations[0].coordinate.longitude)
+        if(!isLocationShown){
+            isLocationShown = true
+            presenter.show(lat: locations[0].coordinate.latitude, lng: locations[0].coordinate.longitude)
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
