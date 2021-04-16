@@ -7,3 +7,5 @@ This app finds restaurants on Google Places and displays their data in a UIColle
 Views are implemented programmatically in UIKit to sidestep the punishing compile times and merge conflicts of Interface Builder while supporting the maximum number of devices possible.
 
 [Cocoapods](https://cocoapods.org/) is required to build this project. Run `pod install` from the project directory once downloaded.
+
+[Needle](https://github.com/uber/needle) is required to build this project. Using [Homebrew](https://brew.sh/), run `brew install needle`.
