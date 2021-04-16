@@ -12,6 +12,7 @@ import provider
 import CoreLocation
 
 protocol HomeDependency: Dependency {
+    var freezer:IFreezer {get}
     var restProvider:IRestaurantProvider {get}
     var favProvider:IFavProvider {get}
     var imgProvider:IImageProvider {get}
@@ -21,7 +22,7 @@ protocol HomeDependency: Dependency {
 
 class HomeComponent: Component<HomeDependency>, HomeViewBuilder {
     var presenter: IHomePresenter {
-        return HomePresenter(freezer: Freezer(), restProvider: dependency.restProvider, favoritesProvider: dependency.favProvider, imageProvider: dependency.imgProvider, searchRadius: dependency.searchRadius)
+        return HomePresenter(freezer: dependency.freezer, restProvider: dependency.restProvider, favoritesProvider: dependency.favProvider, imageProvider: dependency.imgProvider, searchRadius: dependency.searchRadius)
     }
     
     func homeView() -> UIViewController {

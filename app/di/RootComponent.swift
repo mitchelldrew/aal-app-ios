@@ -51,4 +51,8 @@ class RootComponent: BootstrapComponent {
     var imgProvider:IImageProvider{
         return PlacesImageProvider(manager: restManager, apiKey: apiKey)
     }
+    
+    var freezer: IFreezer {
+        return Freezer()
+    }
 }

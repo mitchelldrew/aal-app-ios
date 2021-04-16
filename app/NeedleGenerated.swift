@@ -24,6 +24,9 @@ public func registerProviderFactories() {
 // MARK: - Providers
 
 private class HomeDependencycad225e9266b3c9a56ddBaseProvider: HomeDependency {
+    var freezer: IFreezer {
+        return rootComponent.freezer
+    }
     var restProvider: IRestaurantProvider {
         return rootComponent.restProvider
     }
